@@ -1,0 +1,55 @@
+with hour_expenses as -- расходы на 1 час полета, исходя из стоимости топлива и его потребления моделями самолетов, выполняющих рейсы из Анапы
+(
+select
+    '733' aircraft_code, --Boeing 737-300, расход топлива: 2600 л/ч
+    130000 hour_expenses,
+    402.0 seats -- кол-во мест в самолете, в формате float для дальнейшего корректного деления при определении загруженности самолета
+    union
+select
+    'SU9' aircraft_code, --Sukhoi Superjet-100, расход топлива: 2125 л/ч
+    106250 hour_expenses,
+    97.0 seats
+),
+income as -- доход полета, исходя из оплаты пассажирами мест
+(
+select
+    tf.flight_id as flight_id,
+    sum(tf.amount) as income,
+    count(tf.amount) as passengers -- заодно здесь же посчитаем кол-во пассажиров, летящих данным рейсом
+from
+    dst_project.ticket_flights as tf
+group by tf.flight_id
+),
+airports as
+(
+select
+    ar.airport_code,
+    ar.city
+from
+    dst_project.airports ar
+)
+select
+    fl.flight_id, --id полета
+    extract(EPOCH from(fl.actual_arrival-fl.actual_departure))/3600 as duration, -- длительность полета в часах
+    fl.aircraft_code, -- модель самолета
+    i.income, -- доход
+    h_e.hour_expenses*(extract(EPOCH from(fl.actual_arrival-fl.actual_departure))/3600) as expenses, -- суммарный расход на полет
+    i.income-(h_e.hour_expenses*(extract(EPOCH from(fl.actual_arrival-fl.actual_departure))/3600)) as profit, -- прибыль полета, исходя из дохода продажи билетов и расхода на топливо
+    i.passengers, -- кол-во пассажиров
+    h_e.seats, --кол-во мест в самолете
+    i.passengers/h_e.seats as fullness, -- заполненность самолета
+    'Anapa' as departure_city, -- город отправления всегда один и тот же, можно было бы и не писать вообще, оставлен лишь исходя из условий задания
+    a_ar.city as arrival_city,
+    fl.actual_departure
+from
+    dst_project.flights as fl
+left join income as i -- left join для учета рейсов, не принесших дохода совсем
+    on i.flight_id=fl.flight_id
+join hour_expenses as h_e
+    on h_e.aircraft_code=fl.aircraft_code
+join airports as a_ar -- для определения города прибытия самолета
+    on a_ar.airport_code=fl.arrival_airport
+where fl.departure_airport = 'AAQ' --единственный аэропорт в Анапе
+  and (date_trunc('month', fl.scheduled_departure) in ('2017-01-01','2017-02-01', '2017-12-01'))
+  and fl.status not in ('Cancelled')
+order by fullness

@@ -1,0 +1,7 @@
+select
+    tf.flight_id as flight_id,
+    sum(tf.amount) as income,
+    count(tf.amount) as passengers
+from
+    dst_project.ticket_flights as tf
+group by tf.flight_id

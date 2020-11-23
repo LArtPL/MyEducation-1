@@ -1,0 +1,7 @@
+select
+    count(s.seat_no),
+    s.fare_conditions
+from
+    dst_project.seats as s
+where s.aircraft_code='SU9'
+group by s.fare_conditions

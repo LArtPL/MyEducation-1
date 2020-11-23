@@ -1,0 +1,10 @@
+with hour_expenses as
+(
+select
+    '733' aircraft_code,
+    '130000' hour_expenses
+    union
+select
+    'SU9' aircraft_code,
+    '106250' hour_expenses
+)

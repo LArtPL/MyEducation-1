@@ -1,0 +1,5 @@
+select
+    count(fl.flight_id)
+from
+    dst_project.flights fl
+where fl.status='Departed'

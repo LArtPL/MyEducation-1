@@ -1,0 +1,7 @@
+select
+    ai.city,
+    count(ai.airport_code)
+from
+    dst_project.airports ai
+group by ai.city
+order by 2 desc

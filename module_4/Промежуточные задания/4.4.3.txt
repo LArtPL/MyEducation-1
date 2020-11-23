@@ -1,0 +1,8 @@
+select
+    max(fl.scheduled_arrival-fl.scheduled_departure),
+    fl.departure_airport,
+    fl.arrival_airport
+from
+    dst_project.flights as fl
+group by fl.departure_airport, fl.arrival_airport
+order by 1 desc, 2, 3

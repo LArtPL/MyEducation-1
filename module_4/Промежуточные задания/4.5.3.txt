@@ -1,0 +1,7 @@
+select
+    b.seat_no
+from
+    dst_project.tickets as t
+    join dst_project.boarding_passes as b
+        on b.ticket_no=t.ticket_no
+where t.passenger_id='4313 788533'

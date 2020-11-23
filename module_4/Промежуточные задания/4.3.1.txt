@@ -1,0 +1,5 @@
+select
+    count(fl.flight_id)
+from
+    dst_project.flights as fl
+where fl.status='Cancelled'

@@ -1,0 +1,4 @@
+select
+    count(distinct fl.status)
+from
+    dst_project.flights fl

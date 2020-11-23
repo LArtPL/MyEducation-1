@@ -1,0 +1,4 @@
+select
+    min(fl.scheduled_departure)
+from
+    dst_project.flights as fl

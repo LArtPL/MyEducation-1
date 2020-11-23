@@ -1,0 +1,12 @@
+select
+    ext.region,
+    count(ext.airport_code)
+from
+    (
+    select
+        split_part(ap.timezone,'/', 1) as region,
+        *
+    from
+        dst_project.airports as ap
+    ) ext
+group by ext.region

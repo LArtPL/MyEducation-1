@@ -1,0 +1,4 @@
+select
+    min(b.total_amount)
+from
+    dst_project.bookings as b

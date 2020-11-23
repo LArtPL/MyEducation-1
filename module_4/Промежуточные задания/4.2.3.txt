@@ -1,0 +1,5 @@
+select
+    count(s.seat_no)
+from
+    dst_project.seats as s
+where s.aircraft_code='773'

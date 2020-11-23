@@ -1,0 +1,5 @@
+select
+    count(fl.flight_id)
+from
+    dst_project.flights as fl
+where ((fl.actual_departure between '2017-04-01 00:00:00' and '2017-09-01 00:00:00') or (fl.actual_arrival between '2017-04-01 00:00:00' and '2017-09-01 00:00:00'))  and fl.status='Arrived'

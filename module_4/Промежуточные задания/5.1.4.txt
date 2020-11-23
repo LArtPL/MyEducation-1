@@ -1,0 +1,5 @@
+select
+    count(fl.flight_id)
+from
+    dst_project.flights as fl
+where fl.arrival_airport='AAQ' and fl.departure_airport!='VKO' and fl.departure_airport!='SVO' and fl.departure_airport!='DME'

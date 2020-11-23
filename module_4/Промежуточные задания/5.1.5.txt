@@ -1,0 +1,25 @@
+select
+    ar.model
+from
+(
+select
+    max(seats.seats),
+    fl.aircraft_code
+from
+(
+select
+    s.aircraft_code as code,
+    count(s.seat_no) as seats
+from
+    dst_project.seats as s
+group by s.aircraft_code
+) seats
+join dst_project.flights as fl
+on fl.aircraft_code=seats.code
+where fl.departure_airport='AAQ'
+group by fl.aircraft_code
+order by 1 desc
+limit 1
+) max_seats
+join dst_project.aircrafts as ar
+on ar.aircraft_code=max_seats.aircraft_code
