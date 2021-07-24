@@ -1,5 +1,0 @@
-Ещё интересная статья про выбор lr scheduler:
-https://www.kaggle.com/isbhargav/guide-to-pytorch-learning-rate-scheduling
-
-Игры с albumentations:
-https://albumentations-demo.herokuapp.com/
